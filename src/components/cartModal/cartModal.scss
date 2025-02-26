@@ -78,4 +78,8 @@
     @include justify-align(center, "");
     margin-top: 1.5rem;
   }
+  &__empty {
+    text-align: center;
+    margin-top: 16rem;
+  }
 }

@@ -134,6 +134,7 @@ function App() {
         <section className="app-wrapper">
           {location.pathname !== "/status" && (
             <Navbar
+              cart={cart}
               handleBurgerMenu={handleBurgerMenu}
               handleCartModal={handleCartModal}
             />

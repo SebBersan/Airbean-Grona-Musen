@@ -5,7 +5,7 @@ import CartModalOrderItem from "../cartModalOrderItem/CartModalOrderItem";
 const CartModal: React.FC = ({ cart, postRequest, setCart }) => {
   // fixar en totalt på allt man lägger till
   console.log("cart i cartmodalaaaaaaaaaaaaaaaaaa:", cart.antal);
-
+  // console.log("cart i cartmodala fixed antal:", cart.map(item => item.antal));
   // console.log("cartinfo....", cart);
   // const priceArray = cart.map((item) => {
   //   return item.price;
@@ -21,6 +21,8 @@ const CartModal: React.FC = ({ cart, postRequest, setCart }) => {
         {cart.length > 0 ? (
           <>
             {cart.map((item) => {
+              console.log("iteeeeeeeeeeeeeem", item);
+
               return <CartModalOrderItem key={item.id} item={item} />;
             })}
             <section className="cartModal__wrapper">
@@ -47,7 +49,7 @@ const CartModal: React.FC = ({ cart, postRequest, setCart }) => {
             </section>
           </>
         ) : (
-          "Din kunvagn är tom"
+          <p className="cartModal__empty">Din kunvagn är tom</p>
         )}
       </section>
     </section>
