@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Navbar from "./components/navbar/Navbar";
 import NavbarModal from "./components/navbarModal/NavbarModal";
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import Footer from "./components/footer/Footer";
 import CartModal from "./components/cartModal/CartModal";
-import { Item } from "./types/types"; 
-import HomePage from "./pages/landingPage/landing"; 
-
+import { Item } from "./types/types";
+import HomePage from "./pages/landingPage/landing";
 
 function App() {
   // usestage för o hantera true & false för menyn
@@ -16,12 +15,12 @@ function App() {
   const [cart, setCart] = useState<Item[]>([]);
   const [home, setHome] = useState(true);
 
-const location = useLocation();
+  const location = useLocation();
 
-useEffect(() => {
-  setCartModal(false);
-  setHandleToggle(false);
-}, [location]);
+  useEffect(() => {
+    setCartModal(false);
+    setHandleToggle(false);
+  }, [location]);
 
   //togglar menyn false true
   const handleBurgerMenu = () => {
@@ -38,11 +37,9 @@ useEffect(() => {
     });
   };
 
-
   //fixade med outlet med och skicka props via useoutletcontext på menupage
 
   const handleUpdateCart = (item: Item) => {
-
     //kollar om obj finns i array:
     const itemExists = cart.find((Item) => {
       return Item.title === item.title;
@@ -59,7 +56,6 @@ useEffect(() => {
             : Item
         )
       );
-      
     } else {
       console.log("item NOT! exists");
 
@@ -69,7 +65,6 @@ useEffect(() => {
   };
 
   console.log("uppdatterad meny", cart);
-
 
   const [orderNr, setOrderNr] = useState();
 
@@ -115,31 +110,33 @@ useEffect(() => {
     }
   };
 
-
-  const increaseQuantity = (id: string) => {  
+  const increaseQuantity = (id: string) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
         item.id === id ? { ...item, antal: item.antal + 1 } : item
       )
     );
   };
-  
-  
+
   const decreaseQuantity = (id: string) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === id && item.antal > 1 ? { ...item, antal: item.antal - 1 } : item
+        item.id === id && item.antal > 1
+          ? { ...item, antal: item.antal - 1 }
+          : item
       )
     );
   };
-  
+
   const deleteItem = (id: string) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
-  
+
   const handleClick = () => {
-    setHome(false);  
+    setHome(false);
   };
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -149,31 +146,31 @@ useEffect(() => {
             cart={cart}
             handleBurgerMenu={handleBurgerMenu}
             handleCartModal={handleCartModal}
-            handleToggle={handleToggle}  
+            handleToggle={handleToggle}
           />
         )}
-  
+
         {cartModal && (
           <CartModal
+            navigate={navigate}
             setCart={setCart}
             postRequest={postRequest}
             cart={cart}
-            itemCartAdd={increaseQuantity} 
-            itemCartRemove={decreaseQuantity}  
-            itemCartDelete={deleteItem}       
+            itemCartAdd={increaseQuantity}
+            itemCartRemove={decreaseQuantity}
+            itemCartDelete={deleteItem}
           />
         )}
-  
+
         {handleToggle && <NavbarModal handleBurgerMenu={handleBurgerMenu} />}
         {home && <HomePage handleClick={handleClick} home={home} />}
         <Outlet
           context={{ handleUpdateCart: handleUpdateCart, orderNr: orderNr }}
         />
-  {location.pathname !== "/status" && !home && <Footer />} 
+        {location.pathname !== "/status" && !home && <Footer />}
       </section>
     </>
   );
-  
 }
 
 export default App;

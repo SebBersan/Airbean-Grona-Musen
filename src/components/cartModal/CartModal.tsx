@@ -2,7 +2,7 @@ import "./cartModal.css";
 import Button from "../button/button";
 import CartModalOrderItem from "../cartModalOrderItem/CartModalOrderItem";
 import { Item } from "../../types/types";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction } from "react-router";
 
 type CartModalProps = {
   cart: Item[];
@@ -11,6 +11,7 @@ type CartModalProps = {
   itemCartAdd: (id: string) => void;
   itemCartRemove: (id: string) => void;
   itemCartDelete: (id: string) => void;
+  navigate: NavigateFunction;
 };
 const CartModal: React.FC<CartModalProps> = ({
   cart,
@@ -19,10 +20,9 @@ const CartModal: React.FC<CartModalProps> = ({
   itemCartAdd,
   itemCartRemove,
   itemCartDelete,
+  navigate,
 }) => {
   // navigera till "status" efter order är lagd.
-  const navToStatus = useNavigate();
-
   const bryggKaffe = cart.find((item) => item.title === "Bryggkaffe");
   const bakelse = cart.find((item) => item.title === "Gustav Adolfsbakelse");
 
@@ -87,7 +87,7 @@ const CartModal: React.FC<CartModalProps> = ({
                   onClick={() => {
                     postRequest();
                     setCart([]);
-                    navToStatus("/status");
+                    navigate("/status");
                   }}
                   bgColor={"rgba(47, 41, 38, 1)"}
                   color={" rgba(255, 255, 255, 1)"}
